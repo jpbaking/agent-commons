@@ -3,7 +3,7 @@
 ## Cloning the umbrella
 
 ```sh
-git clone --recurse-submodules <this-repo-url> agent-commons
+git clone --recurse-submodules https://github.com/jpbaking/agent-commons.git agent-commons
 cd agent-commons
 ```
 

@@ -39,7 +39,7 @@ umbrella pins known-good revisions of all six.
 Clone with submodules:
 
 ```sh
-git clone --recurse-submodules <this-repo-url>
+git clone --recurse-submodules https://github.com/jpbaking/agent-commons.git
 # or, in an existing clone:
 git submodule update --init
 ```
