@@ -1,0 +1,18 @@
+[submodule "dox"]
+	path = dox
+	url = https://github.com/jpbaking/dox.git
+[submodule "compose-helper"]
+	path = compose-helper
+	url = https://github.com/jpbaking/compose-helper.git
+[submodule "lazyway-io-design"]
+	path = lazyway-io-design
+	url = https://github.com/jpbaking/lazyway-io-design.git
+[submodule "goal-ledger"]
+	path = goal-ledger
+	url = https://github.com/jpbaking/goal-ledger.git
+[submodule "agentic-tests"]
+	path = agentic-tests
+	url = https://github.com/jpbaking/agentic-tests.git
+[submodule "playwright-fieldkit"]
+	path = playwright-fieldkit
+	url = https://github.com/jpbaking/playwright-fieldkit.git
