@@ -1,6 +1,7 @@
 # Universal Agent Support Playbook
 
-Verified against current official documentation on 2026-07-19.
+Verified against current official documentation on 2026-07-19; user-global
+discovery targets additionally verified by live probe on 2026-07-20.
 
 This guide tells coding agents how to create or migrate reusable instructions for these preferred harnesses:
 
@@ -8,6 +9,7 @@ This guide tells coding agents how to create or migrate reusable instructions fo
 - Anthropic Claude Code
 - Google Antigravity (`agy`)
 - Cline
+- Cursor (skills reach it through the Codex/Claude global copies; no separate install target)
 
 The goal is semantic portability: maintain one authoritative workflow or rule, then install the smallest adapters each harness needs. Do not pretend that discovery paths, command prefixes, rule metadata, or dedicated workflow formats are universal.
 
@@ -34,6 +36,7 @@ Do not use `/skill-name` as the universal spelling. Explicit invocation differs 
 | Claude Code | `CLAUDE.md`, `.claude/CLAUDE.md`, `.claude/rules/*.md` | `.claude/skills/<name>/SKILL.md` | `/skill-name` | Claude-specific workflow/command features exist; do not use them as the shared source |
 | Google Antigravity | `.agents/rules/*.md`; `AGENTS.md` is also recognized by the CLI | `.agents/skills/<name>/SKILL.md` | `/skill-name`, `/skills`, name mention, or implicit selection | UI-managed Markdown workflows use slash commands; migrate reusable cross-agent procedures to skills |
 | Cline | `AGENTS.md`, `.clinerules`, `.clinerules/*.md`, or `.cline/rules/*.md` | Current Cline supports `.agents/skills`; its public skills page also documents `.cline/skills`, `.clinerules/skills`, and `.claude/skills` | `/skill-name` or implicit selection | `.clinerules/workflows` is Cline-specific; prefer skills for shared procedures |
+| Cursor | `AGENTS.md` (root and nested), `.cursor/rules/*.mdc`; User Rules live in app settings, not a file | `.agents/skills/` and `.cursor/skills/`, plus `.claude/skills/` / `.codex/skills/` compatibility paths — nested project subdirectories are also scanned | `/skill-name` or implicit selection | Cursor slash commands/fat rules migrate to skills (`/migrate-to-skills`) |
 
 Important distinctions:
 
@@ -72,9 +75,62 @@ that harness can discover. Apply these rules:
   rule adapter and import the same body through a root instruction file unless
   the harness is verified to collapse that duplication.
 
+## Install scopes: project-level vs user-global
+
+Two scopes exist:
+
+- **User-global (the default for every toolkit):** adapters live in each
+  harness's user-level discovery location. Installs never write into
+  consuming repos — not even `.gitignore`. Project truth (DOX trees and
+  root anchors, data files, generated tests, copied artifacts, helper
+  scripts) is written by skills doing their job, is always committed, and
+  must never be gitignored.
+- **Project-level (explicit user-requested opt-in only):** adapters copied
+  into the consuming repo for teams that want a toolkit pinned there.
+  Whether the team commits or ignores those adapters is the project's own
+  policy; the install still never edits ignore files.
+
+User-global rule adapters must **self-gate on project state** (a marker file
+or directory such as `compose-helper.env`, `.goal-ledger/`, `design/`) so a
+globally installed rule stays inert in unrelated projects. Skills already
+gate on their descriptions; keep those trigger-scoped.
+
+### Verified user-global discovery targets
+
+Verified 2026-07-20 by live probe skills on codex-cli 0.144.6 and Antigravity
+CLI (`agy`) 1.1.4; Claude Code and Cline entries from current official docs.
+
+| Harness | Global skills | Global rules / guidance |
+| --- | --- | --- |
+| Codex | `~/.agents/skills/<name>/` and `~/.codex/skills/<name>/` — **both probe-verified**; prefer `~/.agents/skills/` (cross-agent convention) | merge a marker-guarded pointer block into `~/.codex/AGENTS.md` |
+| Claude Code | `~/.claude/skills/<name>/` | merge a marker-guarded pointer block into `~/.claude/CLAUDE.md` |
+| Antigravity | `~/.gemini/config/skills/<name>/` — probe-verified (as is `~/.gemini/antigravity-cli/skills/`); the CLI does **not** discover `~/.agents/skills/` (probe-verified negative) | `~/.gemini/config/rules/<name>.md` (auto-loaded; verified in live use) |
+| Cline | `~/.cline/skills/<name>/` (official docs; global shadows a same-name project skill) | `~/Cline/Rules/<name>.md` on Linux; `~/Documents/Cline/Rules/` on macOS/Windows (documented discrepancy — cline/cline#5153) |
+| Cursor | **no separate copy** — Cursor discovers `~/.agents/skills/<name>/` natively and `~/.claude/skills/` / `~/.codex/skills/` as compatibility paths (official docs); installing to `~/.cursor/skills/` would create a duplicate | no file-based user-global rules: User Rules are app settings (print the pointer block and ask the user to paste it there once), and committed project `AGENTS.md` anchors are read natively |
+
+Rules for global installs:
+
+- Keep every global skill copy byte-identical to the canonical source, same
+  as project adapters, and re-run the collision audit against project-level
+  paths: a global skill **shadows or duplicates** a same-name project skill.
+- Cursor's compatibility paths mean it sees the `~/.agents/skills/` copy
+  AND the `~/.claude/skills/` / `~/.codex/skills/` copies. Byte-identical
+  copies keep this benign; a stray edited copy in any of those paths (or in
+  `~/.cursor/skills/`) surfaces as a duplicate or shadowed skill in Cursor
+  first.
+- Global instruction files (`~/.codex/AGENTS.md`, `~/.claude/CLAUDE.md`) are
+  user-owned. Merge one marker-guarded block; never overwrite, reorder, or
+  delete existing content.
+- Global installs are per-user, per-machine, and single-version: upgrading a
+  toolkit changes it for every project at once. Documentation must say so.
+- When project docs or anchors mention an optional toolkit, use
+  offer-based wording: *"If the `<name>` skills are not available, they are an
+  optional user-global install — offer to install and proceed only if the
+  user agrees."* Never instruct an agent to install unprompted.
+
 ## Recommended repository layout
 
-Keep one canonical source tree outside all auto-discovery directories, then let an installer copy it into place:
+Keep one canonical source tree outside all auto-discovery directories, then let the agent-guided install procedure copy it into place:
 
 ```text
 skills/
@@ -89,8 +145,7 @@ rules/
     project-guidance.md
 AGENTS.md
 CLAUDE.md
-install.sh
-install.ps1
+AGENT-INSTALL.md
 ```
 
 Recommended bridge files when the corresponding auto-discovered rule adapter is
@@ -108,7 +163,7 @@ This project keeps its shared agent instructions in `DOX.md`. Read `DOX.md` in t
 @AGENTS.md
 ```
 
-The installer should produce this project-local configuration:
+A project-level install should produce this project-local configuration:
 
 ```text
 .agents/
@@ -174,7 +229,7 @@ Apply all of these portability rules:
 
 ### Explicit invocation wording
 
-Documentation and installer output should say:
+Documentation and install-procedure output should say:
 
 > Ask your agent to use the `skill-name` skill.
 
@@ -249,16 +304,29 @@ Installers and migration agents must not blindly overwrite root instruction file
   auto-discovered `.claude/rules` adapter already provides the same guidance.
 - Overwrite only clearly DOX-owned/generated adapter files, and document that policy.
 
-## Installer requirements
+## Install-procedure requirements (`AGENT-INSTALL.md`)
 
-A universal installer should be project-scoped by default and idempotent.
+Installation is **agent-guided only**: each toolkit ships an
+`AGENT-INSTALL.md` that an agent follows end to end. There are no install
+scripts. The agent first acquires the toolkit sources into a temporary
+directory — `git clone` (optionally a fork URL or tag/ref for pinning), a
+repo/release zip download, or `gh repo clone` / `gh release download` — then
+copies files from that staging area and cleans it up afterwards.
+
+The procedure must be idempotent and install **user-global** (project-level
+only on explicit user request).
 
 It should:
 
-- copy every shared skill to both `.agents/skills/<name>/` and `.claude/skills/<name>/`;
+- for user-global installs, copy every shared skill to each selected
+  harness's verified global target (see the matrix above) and merge
+  marker-guarded pointer blocks into user-owned global instruction files;
+- for project-level installs, copy every shared skill to both
+  `.agents/skills/<name>/` and `.claude/skills/<name>/`;
 - copy shared behavioral rule adapters to `.agents/rules/`, `.claude/rules/`, and `.clinerules/` when those adapters are part of the project;
-- create missing `AGENTS.md` and `CLAUDE.md` bridges only when the selected
-  harness would not otherwise receive the same semantic guidance;
+- leave project root anchors (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) to the
+  skills that own them (`dox-init` / `dox-upgrade` create or merge the DOX
+  shim, always preserving existing content); installs do not create bridges;
 - preserve and warn about existing root instruction files rather than overwrite them;
 - overwrite only generated files with stable, documented ownership;
 - accept a repository and revision override for testing forks and release tags;
@@ -268,7 +336,11 @@ It should:
 - inspect every selected harness's overlapping project and global discovery
   paths, report same-name collisions, and verify installed adapter copies match;
 - preserve ignore files and warn when they hide a required canonical path;
-- avoid a universal global mode unless it can safely merge every harness's existing global instruction file.
+- in global mode, merge each harness's existing global instruction file with
+  a single marker-guarded block and fail safe (report, don't overwrite) when
+  the existing content cannot be merged cleanly;
+- never create or edit a project's `.gitignore`; whether a team ignores or
+  commits its agent folders is that project's own policy.
 
 Do not install the same skill simultaneously into `.agents/skills` and `.cline/skills` by default. Current Cline can discover `.agents/skills`, and duplicate discovery can expose two skills with the same name. Offer an explicit legacy-Cline compatibility option only when needed.
 

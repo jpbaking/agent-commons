@@ -13,20 +13,19 @@ Start from the closest existing sibling and keep the shape:
   optional `scripts/`, `references/`, `assets/`.
 - Put durable, always-on guidance in `rules/shared/<name>.md` — small, with a
   fresh-clone fallback sentence.
-- Write `AGENT-INSTALL.md` first (survey → install → merge bridges →
-  gitignore → validate → report); make the script installers implement the
-  same layout. Copy an existing repo's installer as the starting point —
-  per-file `fetch` for small toolkits (dox, lazyway), tarball staging for
-  bundled ones (agentic-tests, playwright-fieldkit).
-- README install section: the agent prompt first, scripts second.
+- Write `AGENT-INSTALL.md` as the sole install path (acquire sources via
+  clone / zip / `gh` → survey → copy-install user-global → merge
+  marker-guarded pointer blocks into global instruction files → validate →
+  report). There are no script installers, and installs never write into a
+  project — project truth is created by the skills during use.
+- README install section: the agent prompt is the only install instruction.
 
 ## 2. Validate
 
 Run the playbook's validation checklist (frontmatter, byte-identical adapter
 copies, collision audit, smoke tests in each harness). Automate what you can —
-goal-ledger's `tests/` (installer + validator unit tests) and
-playwright-fieldkit's self-test are the reference examples. If the repo has
-CI that runs shellcheck, keep the installers clean.
+goal-ledger's `tests/` (layout + validator unit tests) and
+playwright-fieldkit's self-test are the reference examples.
 
 ## 3. Register the submodule
 

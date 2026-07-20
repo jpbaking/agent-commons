@@ -4,8 +4,10 @@
 
 Agent Commons is an umbrella workspace for a family of reusable AI-agent
 toolkits — portable [Agent Skills](https://agentskills.io/), always-on rules,
-and merge-aware installers that work identically across **OpenAI Codex**,
-**Anthropic Claude Code**, **Google Antigravity**, and **Cline**.
+and a merge-aware agent install contract that works identically across **OpenAI Codex**,
+**Anthropic Claude Code**, **Google Antigravity**, **Cline**, and **Cursor**
+(Cursor discovers the shared global skill copies natively — no separate
+install target).
 
 Every toolkit here follows the same contract, defined in
 [MULTI-HARNESS-SUPPORT.md](./MULTI-HARNESS-SUPPORT.md) (the authoritative
@@ -13,12 +15,14 @@ playbook) and summarized in [docs/conventions.md](./docs/conventions.md):
 
 - canonical sources live in `skills/shared/` and `rules/shared/`, never in a
   harness's discovery directory;
-- installs are **agent-guided first** (each repo ships an `AGENT-INSTALL.md`
-  your agent can follow), with `install.sh` / `install.ps1` as the script
-  fallback;
-- installed adapters are **gitignored** in the target project, while the root
-  bridges (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) stay committed with
-  conditional wording that degrades safely on a fresh clone.
+- installs are **agent-guided only** — each repo ships an `AGENT-INSTALL.md`
+  your agent follows (clone / zip / `gh`, then copy); there are no install
+  scripts;
+- every toolkit installs **user-global**; installs never write into
+  consuming projects (not even `.gitignore`). Projects commit only truth —
+  `DOX.md` trees, the root `AGENTS.md` / `CLAUDE.md` anchors carrying the
+  DOX shim (created by `dox-init` / `dox-upgrade`), `.goal-ledger/` records,
+  `design/` copies, `compose-helper.*`, generated agentic tests.
 
 ## The toolkits
 

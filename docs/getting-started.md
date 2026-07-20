@@ -26,40 +26,47 @@ git add -A && git commit -m "Bump toolkit pins"
 To update a single toolkit, `cd` into it, `git pull`, then commit the pin
 change at the umbrella root.
 
-## Installing a toolkit into one of your projects
+## Installing a toolkit
 
 You never install *from* this umbrella — each toolkit installs from its own
 GitHub repo, so a clone of Agent Commons is not required on the machine doing
 the install.
 
-**Preferred — agent-guided.** From your project's root, paste the toolkit's
-install prompt (found in its README) into Codex, Claude Code, Antigravity, or
-Cline. The general shape:
+Installs are **agent-guided only** (there are no install scripts). Paste the
+toolkit's install prompt (found in its README) into Codex, Claude Code,
+Antigravity, or Cline (Cursor picks the skills up automatically through the
+shared `~/.agents/skills/` and `~/.claude/skills/` copies). The general
+shape:
 
 ```
-Fetch https://raw.githubusercontent.com/jpbaking/<toolkit>/main/AGENT-INSTALL.md and follow its instructions exactly to install <toolkit> into this project. Merge with — never blindly overwrite — any existing AGENTS.md, CLAUDE.md, rule, or ignore files, and report every file you created or changed.
+Fetch https://raw.githubusercontent.com/jpbaking/<toolkit>/main/AGENT-INSTALL.md and follow its instructions exactly to install <toolkit>. Merge with — never blindly overwrite — any existing AGENTS.md, CLAUDE.md, rule, or ignore files, and report every file you created or changed.
 ```
 
-The agent audits for skill-name collisions, merges with existing root
-instruction files, installs the skills and rules into each harness's
-discovery path, and gitignores the generated copies.
+The agent acquires the toolkit sources itself (`git clone`, a repo/release
+zip download, or `gh`) into a temporary directory, audits for skill-name
+collisions, and copies the skills and rules into each harness's discovery
+path. The procedure is idempotent — re-run to update.
 
-**Script fallback.** Every toolkit also ships `install.sh` / `install.ps1`:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jpbaking/<toolkit>/main/install.sh | sh
-```
-
-Both paths are idempotent — re-run to update.
+**Where things land:** every toolkit installs **user-global** (your
+`~/.agents`, `~/.claude`, `~/.gemini`, `~/.cline` discovery paths) — nothing
+is added to your repos, and no project `.gitignore` is ever touched. What a
+project commits is truth written by the skills in use: the `DOX.md` tree and
+root `AGENTS.md` / `CLAUDE.md` anchors from `dox-init` / `dox-upgrade`,
+`.goal-ledger/` records, `design/` copies, `compose-helper.*`, generated
+agentic tests. Project-level adapter install is available on explicit
+request.
 
 ## After installing
 
 - Ask your agent to *"use the `<skill-name>` skill"*. Claude Code,
-  Antigravity, and Cline also expose `/<skill-name>`; Codex uses a `$` skill
+  Antigravity, Cline, and Cursor also expose `/<skill-name>`; Codex uses a `$` skill
   mention. Implicit activation works when your request matches the skill's
   description.
-- The installed adapters are gitignored: a teammate's fresh clone won't have
-  them. The committed `AGENTS.md` / `CLAUDE.md` bridges say so and degrade
-  safely — re-running the install regenerates everything.
-- Toolkits compose: a project can carry dox + goal-ledger + agentic-tests
-  side by side; each owns only its own skill/rule names and gitignore block.
+- Toolkits are per-user, per-machine: teammates who want them install them
+  for themselves, and their fresh clones work regardless — the committed
+  root anchors steer any agent to `DOX.md` with zero tooling installed.
+  Only project truth (`DOX.md` trees + anchors, `.goal-ledger/`, `design/`
+  artifacts, `compose-helper.*`, generated agentic tests) lives in the repo.
+  Teams typically add a PR-checklist item that the DOX tree is current.
+- Toolkits compose: use dox + goal-ledger + agentic-tests together; each owns
+  only its own skill/rule names.
