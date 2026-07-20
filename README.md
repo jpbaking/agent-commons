@@ -34,9 +34,10 @@ playbook) and summarized in [docs/conventions.md](./docs/conventions.md):
 | [playwright-fieldkit](https://github.com/jpbaking/playwright-fieldkit) | Hands and eyes on the web: crawl, debug, record, and test live sites via deterministic Playwright scripts |
 | [compose-helper](https://github.com/jpbaking/compose-helper) | A safe `docker compose` wrapper plus the rules that stop agents from wiping volumes or hanging on logs |
 | [lazyway-io-design](https://github.com/jpbaking/lazyway-io-design) | The lazyway.io design system as tokens, classes, and a skill that keeps generated UI on-brand |
+| [cross-cli-handshake](https://github.com/jpbaking/cross-cli-handshake) | One delegation policy turning `claude`, `codex`, and `agy` into each other's pseudo-subagents, loop-safe via role markers |
 
 Each submodule is an independent repository with its own releases; this
-umbrella pins known-good revisions of all six.
+umbrella pins known-good revisions of all seven.
 
 ## Quick start
 
@@ -58,7 +59,7 @@ into your coding agent — see
 MULTI-HARNESS-SUPPORT.md   # the authoritative multi-harness playbook
 README.md                  # this file
 docs/                      # umbrella user guides
-<toolkit>/                 # six submodules, one per toolkit
+<toolkit>/                 # seven submodules, one per toolkit
 ```
 
 ## Documentation

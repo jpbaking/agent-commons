@@ -16,3 +16,6 @@
 [submodule "playwright-fieldkit"]
 	path = playwright-fieldkit
 	url = https://github.com/jpbaking/playwright-fieldkit.git
+[submodule "cross-cli-handshake"]
+	path = cross-cli-handshake
+	url = https://github.com/jpbaking/cross-cli-handshake.git
