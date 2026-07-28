@@ -17,7 +17,9 @@ playbook) and summarized in [docs/conventions.md](./docs/conventions.md):
   harness's discovery directory;
 - installs are **agent-guided only** — each repo ships an `AGENT-INSTALL.md`
   your agent follows (clone / zip / `gh`, then copy); there are no install
-  scripts;
+  scripts. This umbrella ships one too —
+  [AGENT-INSTALL.md](./AGENT-INSTALL.md) — for installing several toolkits
+  in a single audited pass, after it asks you which ones you want;
 - every toolkit installs **user-global**; installs never write into
   consuming projects (not even `.gitignore`). Projects commit only truth —
   `DOX.md` trees, the root `AGENTS.md` / `CLAUDE.md` anchors carrying the
@@ -49,13 +51,20 @@ git clone --recurse-submodules https://github.com/jpbaking/agent-commons.git
 git submodule update --init
 ```
 
-Then install any toolkit into a project by pasting its README's agent prompt
-into your coding agent — see
-[docs/getting-started.md](./docs/getting-started.md).
+Then install any single toolkit by pasting its README's agent prompt into
+your coding agent, or install several at once by pointing your agent at this
+umbrella's `AGENT-INSTALL.md`:
+
+```
+Fetch https://raw.githubusercontent.com/jpbaking/agent-commons/main/AGENT-INSTALL.md and follow its instructions exactly. Ask me which toolkits and which harnesses before installing anything, and report every file you created or changed.
+```
+
+See [docs/getting-started.md](./docs/getting-started.md) for the details.
 
 ## Layout
 
 ```text
+AGENT-INSTALL.md           # family-level agent-guided install (opt-in per toolkit)
 MULTI-HARNESS-SUPPORT.md   # the authoritative multi-harness playbook
 README.md                  # this file
 docs/                      # umbrella user guides

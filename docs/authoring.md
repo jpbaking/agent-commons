@@ -34,7 +34,11 @@ git submodule add https://github.com/jpbaking/<toolkit>.git <toolkit>
 git commit -m "Add <toolkit> submodule"
 ```
 
-Then add a row to the README's toolkit table and, when the toolkit is
+Then add a row to the README's toolkit table **and** to the family table in
+the umbrella [AGENT-INSTALL.md](../AGENT-INSTALL.md) — skills, global rule
+file, pointer-block marker, and anything non-standard about its install —
+plus a position in that file's install order. A toolkit missing from that
+table is invisible to the family install. When the toolkit is
 release-worthy, tag it in its own repo (`gh release create vX.Y.Z …`).
 
 ## 4. Naming gotcha (learned the hard way)

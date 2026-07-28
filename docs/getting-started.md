@@ -28,9 +28,8 @@ change at the umbrella root.
 
 ## Installing a toolkit
 
-You never install *from* this umbrella — each toolkit installs from its own
-GitHub repo, so a clone of Agent Commons is not required on the machine doing
-the install.
+A clone of Agent Commons is never required on the machine doing the install
+— each toolkit installs from its own GitHub repo.
 
 Installs are **agent-guided only** (there are no install scripts). Paste the
 toolkit's install prompt (found in its README) into Codex, Claude Code,
@@ -46,6 +45,22 @@ The agent acquires the toolkit sources itself (`git clone`, a repo/release
 zip download, or `gh`) into a temporary directory, audits for skill-name
 collisions, and copies the skills and rules into each harness's discovery
 path. The procedure is idempotent — re-run to update.
+
+### Installing several toolkits in one pass
+
+For more than one toolkit, use the umbrella's own
+[AGENT-INSTALL.md](../AGENT-INSTALL.md) instead of running the per-toolkit
+prompts back to back — it acquires the pinned family once, audits skill-name
+collisions across all toolkits together, installs in a safe order, and gives
+you one verification and report:
+
+```
+Fetch https://raw.githubusercontent.com/jpbaking/agent-commons/main/AGENT-INSTALL.md and follow its instructions exactly. Ask me which toolkits and which harnesses before installing anything, and report every file you created or changed.
+```
+
+It asks you which of the seven toolkits you want and which harnesses you
+run; nothing is installed until you say so, and each toolkit's own
+`AGENT-INSTALL.md` still governs its individual steps.
 
 **Where things land:** every toolkit installs **user-global** (your
 `~/.agents`, `~/.claude`, `~/.gemini`, `~/.cline` discovery paths) — nothing
