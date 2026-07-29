@@ -35,12 +35,12 @@ a tag, substitute it below.
 | Toolkit | Skills installed | Global rule file | Pointer-block marker | Extras beyond the standard copy |
 | --- | --- | --- | --- | --- |
 | [dox](https://github.com/jpbaking/dox) | `dox-init`, `dox-child`, `dox-audit`, `dox-fix`, `dox-remap`, `dox-upgrade` | `dox.md` | `<!-- dox:global-rule -->` | rule self-gates on a `DOX.md` root; project anchors are written later by `dox-init` / `dox-upgrade`, never by this install |
-| [goal-ledger](https://github.com/jpbaking/goal-ledger) | `goal-ledger`, `goal-ledger-resume`, `goal-ledger-status`, `goal-ledger-abandon` | `goal-ledger.md` | `<!-- goal-ledger:global-rule -->` | rule self-gates on `.goal-ledger/` |
+| [goal-ledger](https://github.com/jpbaking/goal-ledger) | `goal-ledger`, `goal-ledger-execute`, `goal-ledger-resume`, `goal-ledger-status`, `goal-ledger-abandon` | `goal-ledger.md` | `<!-- goal-ledger:global-rule -->` | rule self-gates on `.goal-ledger/` |
 | [agentic-tests](https://github.com/jpbaking/agentic-tests) | `agentic-unit-test`, `agentic-mutation-check`, `agentic-refactor`, `agentic-test-update`, `agentic-test-clean`, `agentic-coverage-report` | *(none — skills only)* | *(none)* | no rule and no pointer block; do not invent one |
-| [playwright-fieldkit](https://github.com/jpbaking/playwright-fieldkit) | `pw-playwright-fieldkit` (whole directory: SKILL.md, scripts, references) | `pw-playwright-fieldkit.md` | `<!-- playwright-fieldkit:global-rule -->` | generated Cline `/pw-*` workflow stubs; browser runtime setup |
+| [playwright-fieldkit](https://github.com/jpbaking/playwright-fieldkit) | `pw-playwright-fieldkit` (whole directory: SKILL.md, scripts, references) | `pw-playwright-fieldkit.md` | `<!-- playwright-fieldkit:global-rule -->` | one shared scripts runtime and browser setup |
 | [compose-helper](https://github.com/jpbaking/compose-helper) | `compose-helper` | `compose-helper.md` | `<!-- compose-helper:global-rule -->` | Part B (the per-project wrapper script) is separate work — do it only when the user asks, in a project |
-| [lazyway-io-design](https://github.com/jpbaking/lazyway-io-design) | `lazyway-io-design` (SKILL.md + `templates/`) | `lazyway-io-design.md` | `<!-- lazyway-io-design:global-rule -->` | kit library under `~/.agents/skills/lazyway-io-design/library/`; rule self-gates on a served `design/` folder |
-| [cross-cli-handshake](https://github.com/jpbaking/cross-cli-handshake) | *(none — rules only)* | `cross-cli-handshake/core.md` + `delegates/{claude,codex,agy}.md` | `<!-- cross-cli-handshake:global-rule -->` | Claude Code, Codex, Antigravity only — no Cline, no Cursor, no project install; per-harness identity token; detects and replaces legacy hand-maintained policy copies |
+| [lazyway-io-design](https://github.com/jpbaking/lazyway-io-design) | `lazyway-io-design` (SKILL.md + `templates/`) | `lazyway-io-design.md` | `<!-- lazyway-io-design:global-rule -->` | kit library under `~/.agents/resources/lazyway-io-design/`; rule self-gates on a served `design/` folder |
+| [cross-cli-handshake](https://github.com/jpbaking/cross-cli-handshake) | *(none — rules only)* | `cross-cli-handshake/core.md` + `delegates/{claude,codex,agy}.md` | `<!-- cross-cli-handshake:global-rule -->` | Claude Code, Codex, and Antigravity CLI only—no Cline or Pi and no project install; per-harness identity token |
 
 ## 1. Confirm scope — required, before anything else
 
@@ -56,10 +56,11 @@ Show the user the family table above, then ask:
    never assume it, never pre-select it, and never treat silence, a hurried
    "yes", or "the usual" as a selection. The toolkits are fully independent;
    a two-toolkit install is as valid as a seven-toolkit one.
-2. **Which harnesses?** Codex, Claude Code, Antigravity, Cline — ask which
-   the user actually has. Cursor needs no separate copy (see step 5).
+2. **Which harnesses?** Antigravity CLI (`agy`), Codex, Claude Code, Cline,
+   and Pi—ask which the user actually has.
    Detecting an installed harness (`~/.codex/`, `~/.claude/`, `~/.gemini/`,
-   `~/.cline/`) is useful evidence to *offer*, not permission to install.
+   `~/.cline/`, `~/.pi/`) is useful evidence to *offer*, not permission to
+   install.
 
 Then read the resulting selection back — toolkits × harnesses — and get a
 clear go-ahead before step 2. If the user's answer is ambiguous or partial,
@@ -97,18 +98,23 @@ Do this **once, across all selected toolkits**, before copying anything:
 
 1. List the skill names from the table above for the selected toolkits and
    check each against every selected harness's global skills directory
-   (`~/.agents/skills/`, `~/.claude/skills/`, `~/.gemini/config/skills/`,
-   `~/.cline/skills/`) and, if you are inside a project, its
-   `.agents/skills/`, `.claude/skills/`, `.cline/skills/`. A global skill
+   (`~/.agents/skills/`, `~/.claude/skills/`,
+   `~/.gemini/antigravity-cli/skills/`, `~/.cline/skills/`, and
+   `~/.pi/agent/skills/`) and, if you are inside a project, its
+   `.agents/skills/`, `.claude/skills/`, `.cline/skills/`,
+   `.clinerules/skills/`, and `.pi/skills/`. A global skill
    **shadows or duplicates** a same-name project skill.
-2. Note which of the pointer-block markers already exist in
-   `~/.codex/AGENTS.md` and `~/.claude/CLAUDE.md`. Present markers mean a
-   re-run/update, not a conflict.
+2. Note which pointer-block markers already exist in the selected hosts'
+   global instruction files (`~/.gemini/GEMINI.md`,
+   `~/.codex/AGENTS.md`, `~/.claude/CLAUDE.md`,
+   `~/.agents/AGENTS.md`, and `~/.pi/agent/AGENTS.md` as applicable).
+   Present markers mean a re-run/update, not a conflict.
 3. Check for legacy artifacts of earlier install models: gitignored adapter
    blocks in consuming projects, `install.sh` / `install.ps1` left over from
-   pre-agent-guided versions, and (for cross-cli-handshake) hand-maintained
-   delegation policy outside the marker block. Report them; remove nothing
-   without user approval.
+   pre-agent-guided versions, same-tool files under
+   `~/.gemini/config/rules/` or the Cline Rules/Workflows directories, and
+   (for cross-cli-handshake) hand-maintained delegation policy outside the
+   marker block. Report them; remove nothing without user approval.
 
 Report the whole survey before proceeding. Collisions with skills the user
 owns are the user's call, not yours.
@@ -141,29 +147,27 @@ and carry the failure into the final report — do not roll back the others.
 These hold no matter which toolkit's file you are following:
 
 - **Byte-identical copies.** Every installed skill copy must match the
-  canonical source and every other harness's copy. Cursor sees
-  `~/.agents/skills/`, `~/.claude/skills/`, and `~/.codex/skills/` at once —
-  byte-identical copies keep that benign; one edited copy surfaces as a
-  duplicate or shadowed skill there first.
-- **No `~/.cursor/skills/` copy.** Cursor discovers the shared paths
-  natively. A separate copy is a duplicate.
-- **Antigravity does not read `~/.agents/skills/`** (probe-verified
-  negative). It needs its own `~/.gemini/config/skills/<name>/` copy.
-- **Global instruction files are user-owned.** `~/.codex/AGENTS.md` and
-  `~/.claude/CLAUDE.md` end up carrying up to six marker-guarded blocks
-  after a full install. For each: if the marker is present, replace that
-  block's body with the current text; otherwise append it once. Never
-  reorder, merge across markers, or touch content outside them. If existing
-  content cannot be merged cleanly, fail safe — report, do not overwrite.
+  canonical `.agents/skills/<name>/` source and every other harness copy.
+  Codex and Pi share one physical `~/.agents/skills/` copy.
+- **Host-specific global paths.** Antigravity CLI needs
+  `~/.gemini/antigravity-cli/skills/`; Claude Code needs
+  `~/.claude/skills/`; Cline needs `~/.cline/skills/`.
+- **Global instruction files are user-owned.** Toolkit rules point to a
+  shared body under `~/.agents/rules/` from the selected host file:
+  `~/.gemini/GEMINI.md` (Antigravity CLI), `~/.codex/AGENTS.md` (Codex),
+  `~/.claude/CLAUDE.md` (Claude Code), `~/.agents/AGENTS.md` (Cline), or
+  `~/.pi/agent/AGENTS.md` (Pi). If a marker is present, replace that block's
+  body with the current text; otherwise append it once. Never reorder, merge
+  across markers, or touch content outside them. If existing content cannot
+  be merged cleanly, fail safe—report, do not overwrite.
 - **Never write to `~/.codex/rules`** or any `.codex/rules` — that path
   holds command-execution policy, not guidance.
 - **Never create or edit a project's `.gitignore`**, and never gitignore
   project truth (`DOX.md`, root anchors, `.goal-ledger/`, `design/`,
   `compose-helper.*`, generated agentic tests).
-- **Cursor rules are app settings.** After installing, print every pointer
-  block from the selected toolkits once, together, and ask the user to paste
-  them into Cursor Settings → Rules — one paste for the whole family, not
-  seven prompts.
+- **No duplicate native rule copy.** Do not also install the same rule under
+  `~/.gemini/config/rules/` or a Cline Rules directory. Detect an old
+  same-tool copy and ask before removing it.
 
 ## 6. Verify
 
@@ -171,18 +175,15 @@ Before reporting, confirm all of the following for the selected toolkits:
 
 1. Every skill directory exists at every selected harness's global target
    and is byte-identical to its staging source.
-2. Every rule file exists at `~/.agents/rules/<name>.md`,
-   `~/.gemini/config/rules/<name>.md`, and the Cline Rules directory
-   (`~/Cline/Rules/` on Linux, `~/Documents/Cline/Rules/` on macOS/Windows —
-   if both exist, use the populated one), byte-identical to source.
-3. `~/.codex/AGENTS.md` and `~/.claude/CLAUDE.md` each contain **exactly
-   one** block per installed marker, with correct identity tokens for
-   cross-cli-handshake (`CODEX` and `CLAUDE` respectively), and all
-   pre-existing unrelated content intact.
-4. Toolkit-specific extras from the table landed: the fieldkit's Cline
-   workflow stubs and browser runtime, the lazyway kit library, the
-   Antigravity `cross-cli-handshake.md` adapter with `always_on`
-   frontmatter and identity `AGY`.
+2. Every selected toolkit that has a rule body stores it once under
+   `~/.agents/rules/`, byte-identical to source, and each selected harness's
+   global instruction file contains exactly one marker block pointing to it.
+3. All pre-existing unrelated instruction content remains intact.
+   Cross-cli-handshake blocks use `AGY`, `CODEX`, and `CLAUDE` in the three
+   participating host files.
+4. Toolkit-specific extras from the table landed: the fieldkit browser
+   runtime, the lazyway kit library, and all three cross-cli-handshake
+   identity blocks.
 5. No skill name appears twice across a harness's overlapping discovery
    paths with differing content.
 
@@ -196,15 +197,14 @@ clone). Then report, in one message:
 - the source revision each toolkit was installed from;
 - collisions and legacy artifacts found in step 3, and what was done about
   each;
-- any toolkit that failed or was skipped, and why;
-- the Cursor pointer blocks to paste, if the user uses Cursor.
-
+- any toolkit that failed or was skipped, and why.
 Then state the next steps:
 
 - Invoke a skill by asking for it by name — *"use the `dox-init` skill"*.
-  Claude Code, Antigravity, Cline, and Cursor also expose `/<skill-name>`;
-  Codex uses a `$` skill mention. Implicit activation works when the request
-  matches a skill's description.
+  Antigravity CLI and Claude Code expose `/<skill-name>`; Cline exposes the
+  native command and project `/<skill-name>.md` shim; Codex uses a `$`
+  selector; Pi uses `/skill:<skill-name>` when skill commands are enabled.
+  Implicit activation works when the request matches a skill's description.
 - The install is per-user, per-machine, and single-version: updating a
   toolkit changes it for every project at once. Re-run this procedure to
   update.

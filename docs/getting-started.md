@@ -32,10 +32,8 @@ A clone of Agent Commons is never required on the machine doing the install
 — each toolkit installs from its own GitHub repo.
 
 Installs are **agent-guided only** (there are no install scripts). Paste the
-toolkit's install prompt (found in its README) into Codex, Claude Code,
-Antigravity, or Cline (Cursor picks the skills up automatically through the
-shared `~/.agents/skills/` and `~/.claude/skills/` copies). The general
-shape:
+toolkit's install prompt (found in its README) into Antigravity CLI, Codex,
+Claude Code, Cline, or Pi. The general shape:
 
 ```
 Fetch https://raw.githubusercontent.com/jpbaking/<toolkit>/main/AGENT-INSTALL.md and follow its instructions exactly to install <toolkit>. Merge with — never blindly overwrite — any existing AGENTS.md, CLAUDE.md, rule, or ignore files, and report every file you created or changed.
@@ -63,8 +61,8 @@ run; nothing is installed until you say so, and each toolkit's own
 `AGENT-INSTALL.md` still governs its individual steps.
 
 **Where things land:** every toolkit installs **user-global** (your
-`~/.agents`, `~/.claude`, `~/.gemini`, `~/.cline` discovery paths) — nothing
-is added to your repos, and no project `.gitignore` is ever touched. What a
+`~/.agents`, `~/.claude`, `~/.gemini`, `~/.cline`, and `~/.pi` discovery
+paths) — nothing is added to your repos, and no project `.gitignore` is ever touched. What a
 project commits is truth written by the skills in use: the `DOX.md` tree and
 root `AGENTS.md` / `CLAUDE.md` anchors from `dox-init` / `dox-upgrade`,
 `.goal-ledger/` records, `design/` copies, `compose-helper.*`, generated
@@ -73,10 +71,10 @@ request.
 
 ## After installing
 
-- Ask your agent to *"use the `<skill-name>` skill"*. Claude Code,
-  Antigravity, Cline, and Cursor also expose `/<skill-name>`; Codex uses a `$` skill
-  mention. Implicit activation works when your request matches the skill's
-  description.
+- Ask your agent to *"use the `<skill-name>` skill"*. Antigravity CLI, Claude
+  Code, and Cline expose slash shortcuts; Codex uses a `$` skill selector and
+  Pi uses `/skill:<skill-name>` when skill commands are enabled. Implicit
+  activation works when your request matches the skill's description.
 - Toolkits are per-user, per-machine: teammates who want them install them
   for themselves, and their fresh clones work regardless — the committed
   root anchors steer any agent to `DOX.md` with zero tooling installed.

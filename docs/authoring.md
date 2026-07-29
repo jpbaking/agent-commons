@@ -7,10 +7,15 @@ Adding a new member to the family means shipping a repository that honors the
 
 Start from the closest existing sibling and keep the shape:
 
-- Author each procedure as a skill in `skills/shared/<name>/SKILL.md` —
+- Author each procedure as a skill in `.agents/skills/<name>/SKILL.md` —
   lowercase-kebab `name` matching the directory, a trigger-rich
   `description` (≤ 1,024 chars), an imperative harness-neutral body, and
   optional `scripts/`, `references/`, `assets/`.
+- Generate a byte-identical mirror at `.claude/skills/<name>/` and a thin
+  `.clinerules/workflows/<name>.md` shim that only tells Cline to use the
+  skill. Never edit the mirror independently.
+- Put durable repository guidance in `AGENTS.md`; keep `CLAUDE.md` as the
+  one-line `@AGENTS.md` bridge unless Claude-only instructions are required.
 - Put durable, always-on guidance in `rules/shared/<name>.md` — small, with a
   fresh-clone fallback sentence.
 - Write `AGENT-INSTALL.md` as the sole install path (acquire sources via
@@ -22,9 +27,9 @@ Start from the closest existing sibling and keep the shape:
 
 ## 2. Validate
 
-Run the playbook's validation checklist (frontmatter, byte-identical adapter
-copies, collision audit, smoke tests in each harness). Automate what you can —
-goal-ledger's `tests/` (layout + validator unit tests) and
+Run the external guide's validation checklist (frontmatter, byte-identical
+adapter copies, collision audit, smoke tests in each harness). Automate what
+you can—goal-ledger's `tests/` (layout + validator unit tests) and
 playwright-fieldkit's self-test are the reference examples.
 
 ## 3. Register the submodule
