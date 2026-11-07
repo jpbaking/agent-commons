@@ -11,10 +11,10 @@ its skills, rule, pointer block, and extras. What this file adds is the
 family-level orchestration — an explicit scope confirmation, one source
 acquisition, one collision audit across all toolkits, a safe install order,
 and a single consolidated verification and report — so a user installing
-several toolkits gets one coherent pass instead of seven disconnected ones.
+several toolkits gets one coherent pass instead of five disconnected ones.
 
 Installing from this file is **opt-in per toolkit**. The user chooses which
-of the seven to install (step 1); this procedure never installs the whole
+of the five to install (step 1); this procedure never installs the whole
 family on its own initiative.
 
 Every toolkit installs **user-global**: once per user, per machine, into
@@ -23,11 +23,10 @@ consuming project — not even its `.gitignore`. Project-level adapters exist
 only as an explicit per-toolkit opt-in (each toolkit's own file has that
 section). What a project commits is truth written later by the skills
 themselves: the `DOX.md` tree and root `AGENTS.md` / `CLAUDE.md` anchors,
-`.goal-ledger/` records, `design/` copies, `compose-helper.*`, generated
-agentic tests.
+`.goal-ledger/` records, `compose-helper.*`, generated agentic tests.
 
 Source repository: `https://github.com/jpbaking/agent-commons` (submodules
-pin known-good revisions of all seven toolkits). If the user named a fork or
+pin known-good revisions of all five toolkits). If the user named a fork or
 a tag, substitute it below.
 
 ## The family
@@ -39,23 +38,21 @@ a tag, substitute it below.
 | [agentic-tests](https://github.com/jpbaking/agentic-tests) | `agentic-unit-test`, `agentic-mutation-check`, `agentic-refactor`, `agentic-test-update`, `agentic-test-clean`, `agentic-coverage-report` | *(none — skills only)* | *(none)* | no rule and no pointer block; do not invent one |
 | [playwright-fieldkit](https://github.com/jpbaking/playwright-fieldkit) | `pw-playwright-fieldkit` (whole directory: SKILL.md, scripts, references) | `pw-playwright-fieldkit.md` | `<!-- playwright-fieldkit:global-rule -->` | one shared scripts runtime and browser setup |
 | [compose-helper](https://github.com/jpbaking/compose-helper) | `compose-helper` | `compose-helper.md` | `<!-- compose-helper:global-rule -->` | Part B (the per-project wrapper script) is separate work — do it only when the user asks, in a project |
-| [lazyway-io-design](https://github.com/jpbaking/lazyway-io-design) | `lazyway-io-design` (SKILL.md + `templates/`) | `lazyway-io-design.md` | `<!-- lazyway-io-design:global-rule -->` | kit library under `~/.agents/resources/lazyway-io-design/`; rule self-gates on a served `design/` folder |
-| [cross-cli-handshake](https://github.com/jpbaking/cross-cli-handshake) | *(none — rules only)* | `cross-cli-handshake/core.md` + `delegates/{claude,codex,agy}.md` | `<!-- cross-cli-handshake:global-rule -->` | Claude Code, Codex, and Antigravity CLI only—no Cline or Pi and no project install; per-harness identity token |
 
 ## 1. Confirm scope — required, before anything else
 
 **Never install the whole family by default.** "Install Agent Commons" is
-not consent to install all seven toolkits; it is a request to start this
+not consent to install all five toolkits; it is a request to start this
 conversation. Do not copy a single file until the user has explicitly named
 what they want.
 
 Show the user the family table above, then ask:
 
-1. **Which toolkits?** List all seven with their one-line purpose and let
-   the user pick. Accept "all seven" only if the user says so themselves —
+1. **Which toolkits?** List all five with their one-line purpose and let
+   the user pick. Accept "all five" only if the user says so themselves —
    never assume it, never pre-select it, and never treat silence, a hurried
    "yes", or "the usual" as a selection. The toolkits are fully independent;
-   a two-toolkit install is as valid as a seven-toolkit one.
+   a two-toolkit install is as valid as a five-toolkit one.
 2. **Which harnesses?** Antigravity CLI (`agy`), Codex, Claude Code, Cline,
    and Pi—ask which the user actually has.
    Detecting an installed harness (`~/.codex/`, `~/.claude/`, `~/.gemini/`,
@@ -112,9 +109,8 @@ Do this **once, across all selected toolkits**, before copying anything:
 3. Check for legacy artifacts of earlier install models: gitignored adapter
    blocks in consuming projects, `install.sh` / `install.ps1` left over from
    pre-agent-guided versions, same-tool files under
-   `~/.gemini/config/rules/` or the Cline Rules/Workflows directories, and
-   (for cross-cli-handshake) hand-maintained delegation policy outside the
-   marker block. Report them; remove nothing without user approval.
+   `~/.gemini/config/rules/` or the Cline Rules/Workflows directories.
+   Report them; remove nothing without user approval.
 
 Report the whole survey before proceeding. Collisions with skills the user
 owns are the user's call, not yours.
@@ -134,10 +130,6 @@ Recommended order, with reasons:
 3. **agentic-tests**
 4. **playwright-fieldkit**
 5. **compose-helper**
-6. **lazyway-io-design**
-7. **cross-cli-handshake** — last, because it is the only procedure that may
-   legitimately stop and wait for the user (legacy-policy removal approval).
-   Reaching it last means a declined answer does not strand the other six.
 
 If any toolkit's step fails, stop that toolkit, keep what already succeeded,
 and carry the failure into the final report — do not roll back the others.
@@ -163,7 +155,7 @@ These hold no matter which toolkit's file you are following:
 - **Never write to `~/.codex/rules`** or any `.codex/rules` — that path
   holds command-execution policy, not guidance.
 - **Never create or edit a project's `.gitignore`**, and never gitignore
-  project truth (`DOX.md`, root anchors, `.goal-ledger/`, `design/`,
+  project truth (`DOX.md`, root anchors, `.goal-ledger/`,
   `compose-helper.*`, generated agentic tests).
 - **No duplicate native rule copy.** Do not also install the same rule under
   `~/.gemini/config/rules/` or a Cline Rules directory. Detect an old
@@ -179,11 +171,8 @@ Before reporting, confirm all of the following for the selected toolkits:
    `~/.agents/rules/`, byte-identical to source, and each selected harness's
    global instruction file contains exactly one marker block pointing to it.
 3. All pre-existing unrelated instruction content remains intact.
-   Cross-cli-handshake blocks use `AGY`, `CODEX`, and `CLAUDE` in the three
-   participating host files.
 4. Toolkit-specific extras from the table landed: the fieldkit browser
-   runtime, the lazyway kit library, and all three cross-cli-handshake
-   identity blocks.
+   runtime.
 5. No skill name appears twice across a harness's overlapping discovery
    paths with differing content.
 
@@ -210,8 +199,7 @@ Then state the next steps:
   update.
 - In a project the user wants governed, start with `dox-init`. The other
   toolkits' rules stay inert until their project marker exists
-  (`.goal-ledger/`, `compose-helper.sh` / `.ps1`, a served `design/`
-  folder).
+  (`.goal-ledger/`, `compose-helper.sh` / `.ps1`).
 - Teammates who want these toolkits install them for themselves; their fresh
   clones still work, because the committed root anchors steer any agent to
   `DOX.md` with zero tooling installed.

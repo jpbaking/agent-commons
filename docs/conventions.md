@@ -31,17 +31,17 @@ each harness's per-user discovery paths; installs never write into a
 consuming project — not even its `.gitignore`. What lives in a project is
 **project truth, committed**: `DOX.md` trees plus the root
 `AGENTS.md`/`CLAUDE.md` anchors carrying the DOX shim (created or merged by
-`dox-init`/`dox-upgrade`), `.goal-ledger/` records, copied `design/`
-artifacts, `compose-helper.sh`/`.ps1`/`.env`, and generated agentic tests.
+`dox-init`/`dox-upgrade`), `.goal-ledger/` records,
+`compose-helper.sh`/`.ps1`/`.env`, and generated agentic tests.
 Truth is written by skills doing their job, never by installs.
 
 Project-level adapter install remains an explicit opt-in (user request only)
 for teams that want a toolkit pinned and shared in one repo.
 
 Globally installed rules must self-gate on project state or a narrow request
-intent (for example, a DOX root, `.goal-ledger/`, a compose-helper wrapper, a
-served `design/` folder, or live-site testing). A deliberately machine-global
-policy such as cross-cli-handshake must state that scope explicitly.
+intent (for example, a DOX root, `.goal-ledger/`, a compose-helper wrapper,
+or live-site testing). A deliberately machine-global policy must state that
+scope explicitly.
 
 ### Project-level targets (opt-in only)
 
@@ -92,8 +92,7 @@ interface.
 
 What must never be gitignored (project truth): the root anchors
 (`AGENTS.md` and `CLAUDE.md` carrying the DOX shim), `DOX.md`
-trees, `.goal-ledger/`, generated agent tests (`*.agentic.spec.*`), the
-project's used `design/` artifacts, and
+trees, `.goal-ledger/`, generated agent tests (`*.agentic.spec.*`), and
 `compose-helper.sh` / `compose-helper.ps1` / `compose-helper.env`.
 
 If an existing ignore rule hides something a harness needs, warn with the

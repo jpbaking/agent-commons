@@ -25,7 +25,7 @@ guides and specialized for this toolkit family in
   consuming projects (not even `.gitignore`). Projects commit only truth —
   `DOX.md` trees, the root `AGENTS.md` / `CLAUDE.md` anchors carrying the
   DOX shim (created by `dox-init` / `dox-upgrade`), `.goal-ledger/` records,
-  `design/` copies, `compose-helper.*`, generated agentic tests.
+  `compose-helper.*`, generated agentic tests.
 
 ## The toolkits
 
@@ -36,11 +36,9 @@ guides and specialized for this toolkit family in
 | [agentic-tests](https://github.com/jpbaking/agentic-tests) | A disciplined test engineer: behavior-locking unit tests, mutation checks, frozen-suite refactoring |
 | [playwright-fieldkit](https://github.com/jpbaking/playwright-fieldkit) | Hands and eyes on the web: crawl, debug, record, and test live sites via deterministic Playwright scripts |
 | [compose-helper](https://github.com/jpbaking/compose-helper) | A safe `docker compose` wrapper plus the rules that stop agents from wiping volumes or hanging on logs |
-| [lazyway-io-design](https://github.com/jpbaking/lazyway-io-design) | The lazyway.io design system as tokens, classes, and a skill that keeps generated UI on-brand |
-| [cross-cli-handshake](https://github.com/jpbaking/cross-cli-handshake) | One delegation policy turning `claude`, `codex`, and `agy` into each other's pseudo-subagents, loop-safe via role markers |
 
 Each submodule is an independent repository with its own releases; this
-umbrella pins known-good revisions of all seven.
+umbrella pins known-good revisions of all five.
 
 ## Quick start
 
@@ -70,7 +68,7 @@ AGENTS.md                  # authoritative umbrella repository guidance
 CLAUDE.md                  # generated @AGENTS.md bridge
 README.md                  # this file
 docs/                      # umbrella user guides
-<toolkit>/                 # seven submodules, one per toolkit
+<toolkit>/                 # five submodules, one per toolkit
 ```
 
 ## Documentation
