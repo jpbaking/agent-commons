@@ -37,20 +37,20 @@ Claude Code, Gemini CLI, Cline, or OpenCode. The general shape:
 
 ```
 Install <toolkit>. Using git with my existing credentials (do not download raw
-files or archives), clone https://github.com/jpbaking/<toolkit> with --depth 1
-into a new temporary directory outside any project. Then read AGENT-INSTALL.md
-from that clone and follow it exactly. Merge with—never blindly
-overwrite—any existing global instruction files, ask me which harnesses to
-install for, and report every file you created or changed.
+files or archives), clone https://github.com/jpbaking/<toolkit> at tag <tag>
+with --depth 1 into a new temporary directory outside any project. Then read
+AGENT-INSTALL.md from that clone and follow it exactly. Merge with—never
+blindly overwrite—any existing global instruction files, ask me which
+harnesses to install for, and report every file you created or changed.
 ```
 
 Your agent clones the toolkit with your own git credentials (so the same
 prompt works for a fork, mirror, or enterprise GitHub host — substitute the
 remote), executes the cloned contract, audits for skill-name collisions, and
 copies the skills and rule into each selected harness's user-global discovery
-paths. Without a tag the default branch is installed as it is at clone time;
-add `at tag vX.Y.Z` to pin a release. The procedure is idempotent — re-run to
-update — and each contract also documents uninstall.
+paths. Use the release tag the toolkit's README pins (dropping `at tag <tag>`
+installs the default branch as it is at clone time). The procedure is
+idempotent — re-run to update — and each contract also documents uninstall.
 
 ### Installing several toolkits in one pass
 
@@ -62,12 +62,13 @@ report:
 
 ```
 Install Agent Commons toolkits. Using git with my existing credentials (do not
-download raw files or archives), clone https://github.com/jpbaking/agent-commons
-with --depth 1 --recurse-submodules --shallow-submodules into a new temporary
-directory outside any project. Then read AGENT-INSTALL.md from that clone and
-follow it exactly. Ask me which toolkits and which harnesses before installing
-anything, merge with—never blindly overwrite—any existing global instruction
-files, and report every file you created or changed.
+download raw files or archives), clone
+https://github.com/jpbaking/agent-commons at tag v4.0.0 with --depth 1
+--recurse-submodules --shallow-submodules into a new temporary directory
+outside any project. Then read AGENT-INSTALL.md from that clone and follow it
+exactly. Ask me which toolkits and which harnesses before installing anything,
+merge with—never blindly overwrite—any existing global instruction files, and
+report every file you created or changed.
 ```
 
 It asks you which of the five toolkits you want and which harnesses you
