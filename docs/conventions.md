@@ -39,11 +39,15 @@ These go beyond, or pin down choices left open by, the external guides.
 - **Project truth is written by skills, never by installs:** `DOX.md` trees
   and the root `AGENTS.md` / `CLAUDE.md` / `.gemini/settings.json` anchors (`dox-init`,
   `dox-upgrade`), `.goal-ledger/` records, `compose-helper.sh` / `.ps1` /
-  `.env` (the `compose-helper` skill), and generated agentic tests. These are
-  committed and must never be gitignored.
-- **Hands off `.gitignore`.** Neither installs nor skills edit a consuming
-  project's ignore files. If an ignore rule hides something a harness needs,
-  report the exact pattern and let the user decide.
+  `compose-helper.env` (the `compose-helper` skill), and generated agentic
+  tests. These are committed and must never be gitignored.
+- **Hands off `.gitignore`.** Installs never edit a consuming project's
+  ignore files. Skills don't either, with one narrow exception: a skill may
+  append a single ignore pattern that keeps secrets out of Git (the
+  `compose-helper` skill's `.env.secrets`) when it is missing, and only after
+  the user explicitly agrees. It never reorders or removes existing lines. If
+  an ignore rule hides something a harness needs, report the exact pattern
+  and let the user decide.
 - **Self-gating rules.** Each global rule gates on project state or a narrow
   request intent (a DOX root, `.goal-ledger/`, a compose-helper wrapper, or
   live-site testing). Its pointer block summarizes the behavior so it works
