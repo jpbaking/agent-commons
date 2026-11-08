@@ -63,7 +63,7 @@ report:
 ```
 Install Agent Commons toolkits. Using git with my existing credentials (do not
 download raw files or archives), clone
-https://github.com/jpbaking/agent-commons at tag v4.0.0 with --depth 1
+https://github.com/jpbaking/agent-commons at tag v4.1.0 with --depth 1
 --recurse-submodules --shallow-submodules into a new temporary directory
 outside any project. Then read AGENT-INSTALL.md from that clone and follow it
 exactly. Ask me which toolkits and which harnesses before installing anything,

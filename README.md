@@ -62,7 +62,7 @@ your coding agent, or install several at once with this umbrella's
 ```
 Install Agent Commons toolkits. Using git with my existing credentials (do not
 download raw files or archives), clone
-https://github.com/jpbaking/agent-commons at tag v4.0.0 with --depth 1
+https://github.com/jpbaking/agent-commons at tag v4.1.0 with --depth 1
 --recurse-submodules --shallow-submodules into a new temporary directory
 outside any project. Then read AGENT-INSTALL.md from that clone and follow it
 exactly. Ask me which toolkits and which harnesses before installing anything,
@@ -70,9 +70,9 @@ merge with—never blindly overwrite—any existing global instruction files, an
 report every file you created or changed.
 ```
 
-This prompt pins umbrella release `v4.0.0`, which pins each toolkit's matching
+This prompt pins umbrella release `v4.1.0`, which pins each toolkit's matching
 release. To install another release, change the tag; to track the default
-branch, drop `at tag v4.0.0`. Your agent will execute the instructions in the
+branch, drop `at tag v4.1.0`. Your agent will execute the instructions in the
 cloned contracts and writes only to user-global paths (`~/.agents/skills/`,
 `~/.claude/skills/`, `~/.gemini/antigravity-cli/skills/`, `~/.agents/rules/`,
 and marker-guarded blocks in your global instruction files).
